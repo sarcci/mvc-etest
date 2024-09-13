@@ -1,0 +1,51 @@
+﻿@model IEnumerable<EtestWebApp.Models.Test>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h3>Листа на тестови</h3>
+
+<p>
+    @if (User.Identity.Name == "admin") {
+        <a asp-action="Create">Додадете нов тест</a>
+    }
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ime)
+                </td>
+                <td>
+                    <div class="d-flex gap-2">
+                        <form asp-action="Pocetok" asp-controller="Kts" method="post">
+                            <input type="hidden" name="tid" value="@item.Id" />
+                            <button type="submit" class="btn btn-success">Почеток</button>
+                        </form>
+                        <a asp-action="Create" asp-controller="Prasanjes" asp-route-tid="@item.Id" class="btn btn-secondary"> Додадете прашање </a>
+                        <form asp-action="Stats" asp-controller="Kts" method="get">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-secondary">Статистики</button>
+                        </form>
+                        <form asp-action="Delete" asp-controller="Tests" >
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-danger">Избриши тест</button>
+                        </form>
+                    </div>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Create">Додадете нов тест</a>
+</div>

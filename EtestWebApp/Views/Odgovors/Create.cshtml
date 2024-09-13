@@ -1,0 +1,57 @@
+﻿@model List<EtestWebApp.Models.Odgovor>
+
+@{
+    ViewData["Title"] = "Create";
+    var pid = ViewData["Pid"];
+}
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create" method="post">
+            <div id="response-container">
+                <!-- Template for new fields -->
+                <div class="response-item">
+                    <div class="form-group">
+                        <label for="Odgovor[0].Tekst">Опција 1</label>
+                        <input name="Odgovor[0].Tekst" class="form-control" /> 
+                        <input type="hidden" name="pid" value="@pid" />
+                    </div>
+                    <!--<div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input name="Odgovor[0].True" type="checkbox" /> Точен
+                        </label>
+                    </div>
+
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input name="Odgovor[${responseCount}].True" type="checkbox" /> Точен
+                        </label>
+                    </div>-->
+                </div>
+            </div>
+            <button type="button" id="add-response" class="btn btn-secondary">Додади друг одговор</button>
+            <div class="form-group">
+                <input type="submit" value="Додади" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    let responseCount = 1;
+
+    document.getElementById('add-response').addEventListener('click', function () {
+        const container = document.getElementById('response-container');
+        const newItem = document.createElement('div');
+        newItem.classList.add('response-item');
+        newItem.innerHTML = `
+            <div class="form-group">
+                <label for="Tekst${responseCount}">Опција ${responseCount+1}</label>
+                <input name="Odgovor[${responseCount}].Tekst" id="Tekst${responseCount}" class="form-control" /> 
+            </div>
+        `;
+        container.appendChild(newItem);
+        responseCount++;
+    });
+</script>

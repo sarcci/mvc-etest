@@ -1,0 +1,131 @@
+﻿@model IEnumerable<EtestWebApp.Models.Prasanje>
+
+@{
+    ViewData["Title"] = "Quiz";
+    var totalQuestions = ViewBag.TotalPages; 
+    var questionsPerRow = 5;
+    var Tid = ViewBag.TestId;
+    var tt = ViewBag.tt;
+}
+
+<h4> Тест: @ViewBag.TestName </h4>
+
+<style>
+    .container {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+    }
+    .nav-table {
+        width: auto; 
+        flex-shrink: 0;
+        order: 1; / Position on the left /
+    }
+    .questions-table {
+        flex: 1;
+        order: 2; / Position on the right /
+    }
+    table, th, td {
+        border: 1px solid #ddd;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 8px;
+        text-align: left;
+    }
+    .nav-table table {
+        border: none; 
+    }
+    .nav-table th, .nav-table td {
+        background-color: transparent; 
+        border: none; 
+        padding: 1px; 
+    }
+
+    .btn-info {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+</style>
+
+<form asp-action="Create" asp-controller="Kodgs" method="post" class="navigation-form">
+    <input type="hidden" name="Oid" id="selectedOid"/>
+    <input type="hidden" name="tid" value="@Tid"/>
+    <input type="hidden" name="Ktid" value="@tt"/>
+    <input type="hidden" name="Pid" id="Pid"/>
+
+    <div class="container">
+        <div class="nav-table">
+            <table class="table">
+                <tbody>
+                    @for (int row = 0; row < Math.Ceiling(totalQuestions / (double)questionsPerRow); row++)
+                    {
+                        <tr>
+                            @for (int col = 0; col < questionsPerRow; col++)
+                            {
+                                var questionNumber = row * questionsPerRow + col + 1;
+                                if (questionNumber <= totalQuestions)
+                                {
+                                    <td>
+                                        <button type="submit" name="page" value="@questionNumber" class="btn btn-info">@questionNumber</button>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td></td> 
+                                }
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="questions-table">
+            <table class="table">
+                <tbody>
+                    @foreach (var item in Model)
+                    {  
+                        <tr>
+                            <td>
+                                @(ViewBag.PageNumber). @Html.DisplayFor(modelItem => item.Tekst)
+                            </td>
+                        </tr>
+
+                        @foreach (var answer in item.Odgovors)
+                        {
+                            <tr>
+                                <td>
+                                    <input type="radio" name="Oid" value="@answer.Id" class="answer-radio"/> @answer.Tekst
+                                </td>
+                            </tr>
+                        }
+
+                        <script>
+                            document.querySelectorAll('.answer-radio').forEach(radio => {
+                                radio.addEventListener('change', function() {
+                                    document.getElementById('selectedOid').value = this.value;
+                                    document.getElementById('Pid').value = "@item.Id";
+                                });
+                            });
+                        </script>
+                    }
+                </tbody>
+            </table>
+
+                    @if (ViewBag.PageNumber > 1)
+                    {
+                        <button type="submit" name="page" value="@(ViewBag.PageNumber - 1)" class="btn btn-primary">Претходно</button>
+                    }
+                    @if (ViewBag.PageNumber < ViewBag.TotalPages)
+                    {
+                        <button type="submit" name="page" value="@(ViewBag.PageNumber + 1)" class="btn btn-primary">Следно</button>
+                    }
+                    @if (ViewBag.PageNumber == ViewBag.TotalPages)
+                    {
+                        <button type="submit" name="page" value="@(ViewBag.PageNumber + 1)" class="btn btn-danger">Заврши</button>
+                    }
+        </div>
+    </div>
+</form>

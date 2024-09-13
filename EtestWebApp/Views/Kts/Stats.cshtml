@@ -1,0 +1,71 @@
+﻿@model IEnumerable<EtestWebApp.Models.Kt>
+
+    
+
+<h4 class="display-4"> Статистики за тестот </h4>
+
+@{
+    ViewData["Title"] = "Scoreboard";
+    var deset = 0;
+    var devet = 0;
+    var osum = 0;
+    var sedum = 0;
+    var sest = 0;
+}
+
+ @foreach (var item in Model)
+    {
+        if (item.Score > 90)
+        {
+            deset++;
+        }
+        else if (item.Score > 80)
+            devet++;
+        else if (item.Score > 70)
+            osum++;
+        else if (item.Score > 60)
+            sedum++;
+        else if (item.Score > 50)
+            sest++;
+    }
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<body>
+
+       
+
+    <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+
+    <script>
+        const xValues = ["6", "7", "8",  "9", "10"];
+        const yValues = [sest, sedum, osum, devet, deset];
+        const barColors = [
+          "#b91d47",
+          "#00aba9",
+          "#2b5797",
+          "#e8c3b9",
+          "#1e7145"
+        ];
+
+        new Chart("myChart", {
+          type: "pie",
+          data: {
+            labels: xValues,
+            datasets: [{
+              backgroundColor: barColors,
+              data: yValues
+            }]
+          },
+          options: {
+            title: {
+              display: true,
+              text: "Тест: @ViewBag.Ime"
+            }
+          }
+        });
+    </script>
+
+</body>
+
+

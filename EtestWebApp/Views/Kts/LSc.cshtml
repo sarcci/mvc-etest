@@ -1,0 +1,33 @@
+﻿@model IEnumerable<EtestWebApp.Models.Kt>
+
+@{
+    ViewData["Title"] = "Резултати";
+}
+
+<h6 class="display-6"> Статистики за Вашите тестови </h6>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Тест
+            </th>
+            <th>
+                Оцена
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TidNavigation.Ime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Score)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

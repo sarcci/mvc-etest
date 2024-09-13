@@ -1,0 +1,45 @@
+﻿@model EtestWebApp.Models.Test
+
+@{
+    ViewData["Title"] = "Details";
+    var br = @Model.Prasanjes.Count();
+}
+
+<h4>Тест @Model.Ime</h4>
+
+<table class="table">
+    <tbody>
+        @foreach (var item in Model.Prasanjes)
+        {
+            <tr>
+                <td>
+                    <!--Idto ne-->
+                    @Html.DisplayFor(modelItem => item.Id). @Html.DisplayFor(modelItem => item.Tekst)
+                </td>
+            </tr>
+            @foreach (var answer in item.Odgovors)
+            {
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<input type="@(item.Tip ? "checkbox" : "radio")" name="answerGroup_@item.Id" /> @answer.Tekst
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<div>
+    @if (ViewBag.PageNumber > 1)
+    {
+        <a href="@Url.Action("Eden", new { id = Model.Id, page = ViewBag.PageNumber - 1})" class="btn btn-default">Претходно</a>
+    }
+    @if (ViewBag.PageNumber < ViewBag.TotalPages)
+    {
+        <a href="@Url.Action("Eden", new { id = Model.Id, page = ViewBag.PageNumber + 1})" class="btn btn-default">Следно</a>
+    }
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Преглед на сите тестови</a>
+</div>
