@@ -2,7 +2,7 @@
 
 ## Description and functionalities
 
-EtestWebApp is an ASP.NET Core Web App (MVC). Users log in using Windows Authenticaton. 
+EtestWebApp is an ASP.NET Core MVC Web Application. Users log in using Windows Authenticaton. 
 Users choose Tests to solve and Surveys to submit their answers to. After choosing
 the test, the user can navigate through questions thanks to the navigation bar left
 to the question, changing their answer if they wish to. After clicking Finish, 
